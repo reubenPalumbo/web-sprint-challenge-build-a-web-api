@@ -1,6 +1,7 @@
 const express = require("express");
 
 const db = require("../data/helpers/projectModel");
+const dbAct = require("../data/helpers/actionModel");
 
 const router = express.Router();
 
@@ -23,6 +24,18 @@ router.get("/projects", (req, res, next) => {
 router.get("/projects/:id", (req, res, next) => {
   db.get(req.params.id)
     .then((proj) => {
+      if (proj !== null) {
+        res.status(200).json(proj);
+      } else {
+        res.status(404).json({ message: "ID not in file" });
+      }
+    })
+    .catch((error) => next(error));
+});
+
+router.get("/projects/:id/actions", (req, res, next) => {
+  db.getProjectActions(req.params.id)
+    .then((proj) => {
       res.status(200).json(proj);
     })
     .catch((error) => next(error));
@@ -36,7 +49,7 @@ router.post("/projects", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-router.delete("/projects/:id", (req, res) => {
+router.delete("/projects/:id", (req, res, next) => {
   db.remove(req.params.id)
     .then((count) => {
       if (count) {
@@ -48,10 +61,10 @@ router.delete("/projects/:id", (req, res) => {
     .catch((error) => next(error));
 });
 
-router.put("/projects/:id", (req, res) => {
+router.put("/projects/:id", (req, res, next) => {
   db.update(req.params.id, req.body)
     .then((count) => {
-      db.findById(id).then((post) => {
+      db.get(req.params.id).then((post) => {
         res.status(200).json(post);
       });
     })
