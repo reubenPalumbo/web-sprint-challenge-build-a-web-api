@@ -67,6 +67,7 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 1. Describe tooling used to manually test the correctness of an API.
 
 You are expected to be able to answer questions in these areas. Your responses contribute to your Sprint Challenge grade.
+h
 
 ## Instructions
 
